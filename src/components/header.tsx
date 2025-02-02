@@ -18,11 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { checkUser } from "@/lib/checkUser";
-
-export default async function Header() {
-  const user = await checkUser();
-  if (!user) {
+export default async function Header({userId} : {userId: string} ) {
+  if (!userId) {
     return null;
   }
   return (
