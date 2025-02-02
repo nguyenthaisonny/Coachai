@@ -1,4 +1,10 @@
-export const industries = [
+export interface Industry {
+    id: string;
+    name: string;
+    subIndustries: string[];
+  }
+
+export const industries: Industry[]= [
     {
       id: "tech",
       name: "Technology",

@@ -1,13 +1,22 @@
-interface User {
-    id: string;
-    name?: string;
+type User = {
+    id: string; // UUID
+    clerkUserId: string; // Clerk user ID
     email: string;
-    clerkUserId: string;
+    name?: string;
     imageUrl?: string;
-    industry?: string;
+    industry?: string; // Combined industry-subindustry (e.g., "tech-software-development")
+    createdAt: Date;
+    updatedAt: Date;
+  
+    // Profile fields
     bio?: string;
-    experience?: string;
-    skills?: string[];
-    createdAt?: Date;
-    updatedAt?: Date;
-}
+    experience?: number; // Years of experience
+  
+    // Relations
+    skills: string[]; // Array of skills
+    assessments: Assessment[];
+    resume?: Resume;
+    coverLetter: CoverLetter[];
+  };
+
+type UserOnBoarding = Pick<User, 'industry' | 'experience' | 'skills' | 'bio'>;
