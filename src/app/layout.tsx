@@ -20,31 +20,28 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-        <html lang="en" suppressHydrationWarning>
-          <body
-            className={`${inter.className}`}
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="icon" href="/logo.png" sizes="any" />
+        </head>
+        <body className={`${inter.className}`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
           >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-                {/* header */}
-                <Header></Header>
-                <main className="min-h-screen">
-                  {children}
-                </main>
-                {/* footer */}
-                  <footer className="bg-muted/50 py-12 ">
-                    <div className="container mx-auto px-4 text-center text-grey-200">
-                      <p className="">Mane by @nguyenthaisonny</p>
-                    </div>
-                  </footer>
-              </ThemeProvider>
-          </body>
-        </html>
-    </ClerkProvider>
+            <Header />
+            <main className="min-h-screen">{children}</main>
 
+            <footer className="bg-muted/50 py-12">
+              <div className="container mx-auto px-4 text-center text-gray-200">
+                <p>Made with 💗 by nguyenthaisonny</p>
+              </div>
+            </footer>
+          </ThemeProvider>
+        </body>
+      </html>
+  </ClerkProvider>
   );
 }
