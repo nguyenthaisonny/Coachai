@@ -1,6 +1,5 @@
-
-import React from "react";
-import { Button } from "./ui/button";
+import React from 'react';
+import { Button } from './ui/button';
 import {
   PenBox,
   LayoutDashboard,
@@ -8,17 +7,17 @@ import {
   GraduationCap,
   ChevronDown,
   StarsIcon,
-} from "lucide-react";
-import Link from "next/link";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+} from 'lucide-react';
+import Link from 'next/link';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Image from "next/image";
-export default async function Header({userId} : {userId: string} ) {
+} from '@/components/ui/dropdown-menu';
+import Image from 'next/image';
+export default async function Header({ userId }: { userId: string }) {
   if (!userId) {
     return null;
   }
@@ -27,7 +26,7 @@ export default async function Header({userId} : {userId: string} ) {
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/">
           <Image
-            src={"/logoHeader.jpg"}
+            src={'/logoHeader.jpg'}
             alt="Sensai Logo"
             width={200}
             height={60}
@@ -96,9 +95,9 @@ export default async function Header({userId} : {userId: string} ) {
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "w-10 h-10",
-                  userButtonPopoverCard: "shadow-xl",
-                  userPreviewMainIdentifier: "font-semibold",
+                  avatarBox: 'w-10 h-10',
+                  userButtonPopoverCard: 'shadow-xl',
+                  userPreviewMainIdentifier: 'font-semibold',
                 },
               }}
               afterSignOutUrl="/"

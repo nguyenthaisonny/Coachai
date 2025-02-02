@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const HeroSection = () => {
   const imageRef = useRef<HTMLDivElement>(null);
@@ -16,14 +16,14 @@ const HeroSection = () => {
       const scrollThreshold = 100;
 
       if (scrollPosition > scrollThreshold) {
-        imageElement.classList.add("scrolled");
+        imageElement.classList.add('scrolled');
       } else {
-        imageElement.classList.remove("scrolled");
+        imageElement.classList.remove('scrolled');
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (

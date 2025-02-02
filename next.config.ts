@@ -1,8 +1,8 @@
-import { NextConfig } from "next";
+import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["randomuser.me"], // Add this line
+    domains: ['randomuser.me'], // Add this line
   },
 };
 

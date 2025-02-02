@@ -1,0 +1,7 @@
+{
+  "extends": ["next/core-web-vitals", "prettier"],
+  "rules": {
+    "react/jsx-curly-brace-presence": ["error", "always"],
+    "semi": ["error", "always"]
+  }
+}
