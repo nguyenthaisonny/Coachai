@@ -6,6 +6,7 @@ import Header from '@/components/header';
 import { ClerkProvider } from '@clerk/nextjs';
 import { checkUser } from '@/lib/checkUser';
 import { currentUser } from '@clerk/nextjs/server';
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
@@ -18,8 +19,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await checkUser();
-
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
@@ -33,9 +32,9 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header userId={user?.id ?? ''} />
+            <Header />
             <main className="min-h-screen">{children}</main>
-
+            <Toaster richColors />
             <footer className="bg-muted/50 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
                 <p>Made with 💗 by nguyenthaisonny</p>

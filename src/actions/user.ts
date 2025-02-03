@@ -8,18 +8,16 @@ interface UpdateUserResponse {
   industryInsight: IndustryInsight;
 }
 
-export async function updateUser({
-  data,
-}: {
-  data: UserOnBoarding;
-}): Promise<UpdateUserResponse> {
+export async function updateUser(
+  data: UserOnBoarding,
+): Promise<UpdateUserResponse> {
   const { userId } = await auth();
   if (!userId) {
     throw new Error('User not authenticated');
   }
   const user = await db.user.findUnique({
     where: {
-      id: userId,
+      clerkUserId: userId,
     },
   });
   if (!user) {
@@ -28,13 +26,14 @@ export async function updateUser({
   try {
     const result: any = await db.$transaction(
       async (tx) => {
-        let industryInsight = tx.industryInsight.findUnique({
+        let industryInsight = await tx.industryInsight.findUnique({
           where: {
             industry: data.industry,
           },
         });
+
         if (!industryInsight) {
-          industryInsight = tx.industryInsight.create({
+          industryInsight = await tx.industryInsight.create({
             data: {
               industry: data.industry ?? '',
               salaryRanges: [],
@@ -49,9 +48,9 @@ export async function updateUser({
           });
         }
 
-        const updateUser = tx.user.update({
+        const updateUser = await tx.user.update({
           where: {
-            id: userId,
+            clerkUserId: userId,
           },
           data: {
             industry: data.industry,
@@ -60,6 +59,7 @@ export async function updateUser({
             skills: data.skills,
           },
         });
+
         //find if the industry exits
         //If industry does not exist, create it with default value
         //update the user
@@ -72,9 +72,11 @@ export async function updateUser({
         timeout: 10000, // default  5000
       },
     );
-    return result.user;
-  } catch (e) {
-    throw new Error('Failed to update user');
+
+    return { success: true, ...result };
+  } catch (e: any) {
+    console.error('Error updating user and industry', e.message);
+    throw new Error('Failed to update user profile: ', e.message);
   }
 }
 
@@ -88,7 +90,7 @@ export async function getUserOnBoardingStatus(): Promise<{
   try {
     const user = await db.user.findUnique({
       where: {
-        id: userId,
+        clerkUserId: userId,
       },
       select: {
         industry: true,
@@ -98,8 +100,7 @@ export async function getUserOnBoardingStatus(): Promise<{
       isOnboarded: !!user?.industry,
     };
   } catch (e: any) {
-    console.log('Error checking onboarding status', e.message);
-
+    console.error('Error checking onboarding status', e.message);
     throw new Error('Failed check on boarding status');
   }
 }
