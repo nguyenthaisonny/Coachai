@@ -25,7 +25,6 @@ export async function updateUser(
 
         if (!industryInsight) {
           const insights = await generateAIInsights(data?.industry);
-          console.log('ins', insights);
 
           industryInsight = await db.industryInsight.create({
             data: {

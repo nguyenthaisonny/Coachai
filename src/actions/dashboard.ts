@@ -33,11 +33,9 @@ export const generateAIInsights = async (
         Include at least 5 skills and trends.
     `;
   const result = await model.generateContent(prompt);
-  console.log('result');
 
   const response = result.response;
   const text = response.text();
-  console.log('text', text);
 
   const cleanedText = text.replace(/```(?:json)?\n?/g, '').trim();
   return JSON.parse(cleanedText);
@@ -60,11 +58,13 @@ export const getIndustryInsights =
           data: {
             industry: user?.industry,
             ...insights,
+            salaryRanges: insights.salaryRanges as [],
             nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           },
         });
         return industryInsight;
       }
+      return user?.industryInsight;
     } catch (error: any) {
       console.error('Fail to generate insights: ', error.message);
     }

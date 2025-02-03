@@ -23,7 +23,7 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <head>
-          <link rel="icon" href="/logo.png" sizes="any" />
+          <link rel="icon" sizes="any" />
         </head>
         <body className={`${inter.className}`}>
           <ThemeProvider
