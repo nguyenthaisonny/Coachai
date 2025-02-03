@@ -1,8 +1,10 @@
 'use server';
 
 import { db } from '@/lib/prisma';
+import { User, UserOnBoarding } from '@/type/user';
 import { auth } from '@clerk/nextjs/server';
 import { IndustryInsight } from '@prisma/client';
+import { generateAIInsights } from '@/actions/dashboard';
 interface UpdateUserResponse {
   user: User;
   industryInsight: IndustryInsight;
@@ -11,38 +13,25 @@ interface UpdateUserResponse {
 export async function updateUser(
   data: UserOnBoarding,
 ): Promise<UpdateUserResponse> {
-  const { userId } = await auth();
-  if (!userId) {
-    throw new Error('User not authenticated');
-  }
-  const user = await db.user.findUnique({
-    where: {
-      clerkUserId: userId,
-    },
-  });
-  if (!user) {
-    throw new Error('User not found');
-  }
+  const { userId } = await checkUserLogin();
   try {
     const result: any = await db.$transaction(
       async (tx) => {
         let industryInsight = await tx.industryInsight.findUnique({
           where: {
-            industry: data.industry,
+            industry: data?.industry,
           },
         });
 
         if (!industryInsight) {
-          industryInsight = await tx.industryInsight.create({
+          const insights = await generateAIInsights(data?.industry);
+          console.log('ins', insights);
+
+          industryInsight = await db.industryInsight.create({
             data: {
-              industry: data.industry ?? '',
-              salaryRanges: [],
-              growthRate: 0,
-              demandLevel: 'MEDIUM',
-              topSkills: [],
-              marketOutlook: 'NEUTRAL',
-              keyTrends: [],
-              recommendedSkills: [],
+              industry: data?.industry,
+              ...insights,
+              salaryRanges: insights.salaryRanges as [],
               nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             },
           });
@@ -53,13 +42,12 @@ export async function updateUser(
             clerkUserId: userId,
           },
           data: {
-            industry: data.industry,
-            experience: data.experience,
-            bio: data.bio,
-            skills: data.skills,
+            industry: data?.industry,
+            experience: data?.experience,
+            bio: data?.bio,
+            skills: data?.skills,
           },
         });
-
         //find if the industry exits
         //If industry does not exist, create it with default value
         //update the user
@@ -83,10 +71,7 @@ export async function updateUser(
 export async function getUserOnBoardingStatus(): Promise<{
   isOnboarded: boolean;
 }> {
-  const { userId } = await auth();
-  if (!userId) {
-    throw new Error('User not authenticated');
-  }
+  const { userId } = await checkUserLogin();
   try {
     const user = await db.user.findUnique({
       where: {
@@ -104,3 +89,20 @@ export async function getUserOnBoardingStatus(): Promise<{
     throw new Error('Failed check on boarding status');
   }
 }
+
+export const checkUserLogin = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error('User not authenticated');
+  }
+  const user: any = await db.user.findUnique({
+    where: {
+      clerkUserId: userId,
+    },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return { userId };
+};

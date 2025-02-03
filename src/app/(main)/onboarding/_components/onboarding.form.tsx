@@ -29,6 +29,7 @@ import useFetch from '@/hooks/useFetch';
 import { updateUser } from '@/actions/user';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { UserOnBoarding } from '@/type/user';
 
 interface OnBoardingForm {
   industry: string;
@@ -73,7 +74,6 @@ const OnBoardingForm = ({ industries }: { industries: Industry[] }) => {
         .toLowerCase()
         .replace(/ /g, '-')}`;
       await updateUserFn({ ...values, industry: formatIndustry });
-      console.log('updata', updateResult);
     } catch (error) {
       console.error('On boarding error: ', error);
     }
@@ -81,8 +81,8 @@ const OnBoardingForm = ({ industries }: { industries: Industry[] }) => {
 
   useEffect(() => {
     if (updateResult?.success && !dataLoading) {
-      toast.success('Profile completed successfully!');
       router.push('dashboard');
+      toast.success('Profile completed successfully!');
       router.refresh();
     }
   }, [updateResult, dataLoading]);
