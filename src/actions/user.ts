@@ -103,5 +103,5 @@ export const checkUserLogin = async () => {
   if (!user) {
     throw new Error('User not found');
   }
-  return { userId };
+  return { userId, user };
 };

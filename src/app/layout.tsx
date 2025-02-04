@@ -4,8 +4,6 @@ import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import Header from '@/components/header';
 import { ClerkProvider } from '@clerk/nextjs';
-import { checkUser } from '@/lib/checkUser';
-import { currentUser } from '@clerk/nextjs/server';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });

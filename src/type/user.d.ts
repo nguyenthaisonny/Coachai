@@ -7,4 +7,6 @@ type User = Omit<User> & {
   industryInsight?: IndustryInsight;
 };
 
-type UserOnBoarding = Pick<User, 'industry' | 'experience' | 'skills' | 'bio'>;
+type UserOnBoarding = Pick<User, 'experience' | 'skills' | 'bio'> & {
+  industry: string;
+};

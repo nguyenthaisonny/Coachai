@@ -4,7 +4,9 @@ import { checkUserLogin } from '@/actions/user';
 import { db } from '@/lib/prisma';
 import { IndustryInsight } from '@prisma/client';
 import { Insights, SalaryRange } from '@/type/industry';
-import geminiModel from '@/AIs/gemini/gemini-model';
+import geminiModel, {
+  getCleanedGeminiResponse,
+} from '@/AIs/gemini/gemini-model';
 export const generateAIInsights = async (
   industry: string,
 ): Promise<Insights> => {
@@ -28,12 +30,7 @@ export const generateAIInsights = async (
         Include at least 5 skills and trends.
     `;
   const result = await geminiModel.generateContent(prompt);
-
-  const response = result.response;
-  const text = response.text();
-
-  const cleanedText = text.replace(/```(?:json)?\n?/g, '').trim();
-  return JSON.parse(cleanedText);
+  return getCleanedGeminiResponse(result);
 };
 
 export const getIndustryInsights =

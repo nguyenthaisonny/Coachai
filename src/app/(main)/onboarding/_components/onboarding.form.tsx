@@ -68,12 +68,12 @@ const OnBoardingForm = ({ industries }: { industries: Industry[] }) => {
     setValue('subIndustry', value);
   };
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = (values: any) => {
     try {
       const formatIndustry = `${values.industry}-${values.subIndustry
         .toLowerCase()
         .replace(/ /g, '-')}`;
-      await updateUserFn({ ...values, industry: formatIndustry });
+      updateUserFn({ ...values, industry: formatIndustry });
     } catch (error) {
       console.error('On boarding error: ', error);
     }
