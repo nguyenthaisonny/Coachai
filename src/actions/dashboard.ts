@@ -3,13 +3,8 @@
 import { checkUserLogin } from '@/actions/user';
 import { db } from '@/lib/prisma';
 import { IndustryInsight } from '@prisma/client';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Insights } from '@/type/industry';
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-const model = genAI.getGenerativeModel({
-  model: 'gemini-1.5-flash',
-});
+import { Insights, SalaryRange } from '@/type/industry';
+import geminiModel from '@/AIs/gemini/gemini-model';
 export const generateAIInsights = async (
   industry: string,
 ): Promise<Insights> => {
@@ -32,7 +27,7 @@ export const generateAIInsights = async (
         Growth rate should be a percentage.
         Include at least 5 skills and trends.
     `;
-  const result = await model.generateContent(prompt);
+  const result = await geminiModel.generateContent(prompt);
 
   const response = result.response;
   const text = response.text();
@@ -42,7 +37,7 @@ export const generateAIInsights = async (
 };
 
 export const getIndustryInsights =
-  async (): Promise<Insights | void | null> => {
+  async (): Promise<IndustryInsight | void | null> => {
     const { userId } = await checkUserLogin();
     try {
       const user = await db.user.findUnique({
@@ -58,7 +53,7 @@ export const getIndustryInsights =
           data: {
             industry: user?.industry,
             ...insights,
-            salaryRanges: insights.salaryRanges as [],
+            salaryRanges: insights.salaryRanges as SalaryRange[],
             nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           },
         });

@@ -30,14 +30,16 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { IndustryInsight } from '@prisma/client';
 
-const DashBoardView = ({ insights }: { insights: Insights }) => {
-  const salaryData = insights?.salaryRanges.map((range: SalaryRange) => ({
-    name: range.role,
-    min: range.min / 1000,
-    max: range.max / 1000,
-    median: range.median / 1000,
-  }));
+const DashBoardView = ({ insights }: { insights: IndustryInsight }) => {
+  const salaryData =
+    insights?.salaryRanges?.map((range: any) => ({
+      name: range.role,
+      min: range.min / 1000,
+      max: range.max / 1000,
+      median: range.median / 1000,
+    })) || [];
 
   const getDemandLevelColor = (level: string) => {
     switch (level.toLowerCase()) {
@@ -203,7 +205,7 @@ const DashBoardView = ({ insights }: { insights: Insights }) => {
           <CardContent>
             <div className="space-y-4">
               {insights.keyTrends.map((trend) => (
-                <div className="flex items-start space-x-2">
+                <div key={trend} className="flex items-start space-x-2">
                   <div className="h-2 w-2 mt-2 rounded-full bg-primary" />
                   <div className="text-sm font-medium">{trend}</div>
                 </div>
@@ -221,9 +223,9 @@ const DashBoardView = ({ insights }: { insights: Insights }) => {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap space-x-2">
-              {insights.recommendedSkills.map((trend) => (
-                <div>
-                  <Badge variant="outline">{trend}</Badge>
+              {insights.recommendedSkills.map((skill) => (
+                <div key={skill}>
+                  <Badge variant="outline">{skill}</Badge>
                 </div>
               ))}
             </div>

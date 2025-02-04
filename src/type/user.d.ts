@@ -1,21 +1,6 @@
-import { IndustryInsight } from '@prisma/client';
+import { IndustryInsight, User } from '@prisma/client';
 
-type User = {
-  id: string; // UUID
-  clerkUserId: string; // Clerk user ID
-  email: string;
-  name?: string;
-  imageUrl?: string;
-  industry: string; // Combined industry-subindustry (e.g., "tech-software-development")
-  createdAt: Date;
-  updatedAt: Date;
-
-  // Profile fields
-  bio?: string;
-  experience?: number; // Years of experience
-
-  // Relations
-  skills: string[]; // Array of skills
+type User = Omit<User> & {
   assessments: Assessment[];
   resume?: Resume;
   coverLetter: CoverLetter[];
