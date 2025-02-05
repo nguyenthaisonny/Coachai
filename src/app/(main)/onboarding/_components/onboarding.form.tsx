@@ -48,7 +48,7 @@ const OnBoardingForm = ({ industries }: { industries: Industry[] }) => {
     loading: dataLoading,
     fn: updateUserFn,
     data: updateResult,
-  } = useFetch<UserOnBoarding>(updateUser);
+  } = useFetch<UserOnBoarding, null>(updateUser);
   const {
     register,
     handleSubmit,
@@ -80,7 +80,7 @@ const OnBoardingForm = ({ industries }: { industries: Industry[] }) => {
   };
 
   useEffect(() => {
-    if (updateResult?.success && !dataLoading) {
+    if (updateResult && !dataLoading) {
       router.push('dashboard');
       toast.success('Profile completed successfully!');
       router.refresh();

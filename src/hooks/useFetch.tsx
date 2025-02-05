@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-interface DataResult<T> {
-  success: boolean;
-  data: T;
-}
-const useFetch = <I,>(cb: (args: I) => Promise<any>) => {
-  const [data, setData] = useState<DataResult<I>>();
+
+const useFetch = <I, T>(cb: any) => {
+  const [data, setData] = useState<T | null>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 

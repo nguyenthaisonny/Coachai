@@ -9,10 +9,9 @@ type Question = {
   explanation: string;
 };
 
-type QuizResult = {
+type RawQuizResult = {
   questions: Question[];
   answers: string[];
-  score: number;
 };
 
 type QuestionResult = {
@@ -20,5 +19,9 @@ type QuestionResult = {
   answer: string;
   userAnswer: string;
   isCorrect: boolean;
-  explaination: string;
+  explanation: string;
+};
+
+type Assessment = Omit<Assessment, 'questions'> & {
+  questions: QuestionResult[];
 };

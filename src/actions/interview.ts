@@ -4,6 +4,7 @@ import geminiModel, {
   getCleanedGeminiResponse,
 } from '@/AIs/gemini/gemini-model';
 import { db } from '@/lib/prisma';
+import { Assessment } from '@prisma/client';
 
 export async function generateQuestions(): Promise<Question[]> {
   const { user } = await checkUserLogin();
@@ -41,19 +42,23 @@ export async function generateQuestions(): Promise<Question[]> {
 export async function saveQuizResult({
   questions,
   answers,
-  score,
-}: QuizResult) {
+}: RawQuizResult): Promise<Assessment> {
   const { user } = await checkUserLogin();
   const questionResults: QuestionResult[] = questions.map((q, index) => ({
     question: q.question,
     answer: q.correctAnswer,
     userAnswer: answers[index],
     isCorrect: q.correctAnswer === answers[index],
-    explaination: q.explanation,
+    explanation: q.explanation,
   }));
+  let totalQuestion = questions.length;
+  let scoreOfOneQuestion = 100 / totalQuestion;
+  let score = 0;
+  questionResults.map(({ isCorrect }) => {
+    if (isCorrect) score += scoreOfOneQuestion;
+  });
 
   const wrongAnswers = questionResults.filter((q) => !q.isCorrect);
-
   // Only generate improvement tips if there are wrong answers
   let improvementTip = null;
   if (wrongAnswers.length > 0) {
