@@ -65,7 +65,7 @@ const QuizResult = ({
                   {!isCorrect && <p>Correct answer: {answer}</p>}
                 </div>
                 <div className="text-sm bg-muted p-2 rounded">
-                  <p className="font-medium">Explaination:</p>
+                  <p className="font-medium mb-1 underline">Explaination:</p>
                   <p>{explanation}</p>
                 </div>
               </div>

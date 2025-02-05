@@ -1,5 +1,4 @@
 'use client';
-import { Insights, SalaryRange } from '@/type/industry';
 import {
   TrendingUp,
   LineChart,

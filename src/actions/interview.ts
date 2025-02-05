@@ -4,7 +4,6 @@ import geminiModel, {
   getCleanedGeminiResponse,
 } from '@/AIs/gemini/gemini-model';
 import { db } from '@/lib/prisma';
-import { Assessment } from '@prisma/client';
 
 export async function generateQuestions(): Promise<Question[]> {
   const { user } = await checkUserLogin();
@@ -105,5 +104,21 @@ export async function saveQuizResult({
   } catch (error) {
     console.error('Erro saving quiz result: ', error);
     throw new Error('Failed to save quiz result');
+  }
+}
+
+export async function getAssessments(): Promise<Assessment[]> {
+  const { user } = await checkUserLogin();
+  try {
+    const assessments = await db.assessment.findMany({
+      where: { userId: user.id },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+    return assessments;
+  } catch (error) {
+    console.error('Error fetching assessments:', error);
+    return [];
   }
 }
