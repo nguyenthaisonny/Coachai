@@ -18,7 +18,7 @@ type Resume = {
   contacInfo: ContactResume;
   summary: string;
   skills: string;
-  experience: EntryResume[];
-  education: EntryResume[];
-  project: EntryResume[];
+  experience?: EntryResume[];
+  education?: EntryResume[];
+  project?: EntryResume[];
 };

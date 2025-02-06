@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 export const contactSchema = z.object({
   email: z.string().email('Invalid email address'),
-  mobile: z.string().optional(),
+  mobile: z
+    .string()
+    .regex(/^\+\d{1,3}\s?\d{4,14}$/, 'Phone number must include country code')
+    .optional(),
   linkedin: z.string().optional(),
   twitter: z.string().optional(),
 });
@@ -25,6 +28,18 @@ export const entrySchema = z
     },
     {
       message: 'End date is required unless this is your current posotion',
+      path: ['endDate'],
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.endDate && new Date(data.startDate) > new Date(data.endDate)) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'End date must be after start date',
       path: ['endDate'],
     },
   );

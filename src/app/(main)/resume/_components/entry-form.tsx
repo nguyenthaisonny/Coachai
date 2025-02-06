@@ -23,8 +23,8 @@ import { toast } from 'sonner';
 
 const formatDate = (date: string) => {
   if (!date) return;
-  const data = parse(date, 'yyyy-MM', new Date());
-  return format(date, 'MMM yyyy');
+  const parsedDate = parse(date, 'yyyy-MM', new Date());
+  return format(parsedDate, 'MMM yyyy');
 };
 
 const EntryForm = ({
@@ -63,12 +63,15 @@ const EntryForm = ({
     fn: improveWithAIFn,
   } = useFetch<{ current: string; type: string }, string>(improveWithAI);
   const handleAdd = handleValidation((data: EntryResume) => {
+    console.log();
+
     const formatedData = {
       ...data,
       startDate: formatDate(data.startDate) as string,
       endDate: data?.current ? '' : (formatDate(data.endDate) as string),
     };
     onChange([...entries, formatedData]);
+    console.log(entries);
   });
   const handleDelete = (index: number) => {
     const newEntries = entries.filter((_, i) => i !== index);
