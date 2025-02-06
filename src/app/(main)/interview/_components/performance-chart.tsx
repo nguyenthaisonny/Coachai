@@ -21,7 +21,9 @@ import {
 import { format } from 'date-fns';
 
 const PerformanceChart = ({ assessments }: { assessments: Assessment[] }) => {
-  const [dataChart, setDataChart] = useState<Assessment[]>(Array.from({ length: 12 }));
+  const [dataChart, setDataChart] = useState<Assessment[]>(
+    Array.from({ length: 12 }),
+  );
   useEffect(() => {
     if (assessments.length) {
       const dataTrend = assessments.map(({ quizScore, createdAt }, index) => ({

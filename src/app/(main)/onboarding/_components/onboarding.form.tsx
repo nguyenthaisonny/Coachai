@@ -3,7 +3,7 @@ import { Industry } from '@/data/industries';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { onBoardingSchema } from '@/app/lib/schema';
+import { onBoardingSchema } from '@/app/lib/schemas/onboarding';
 import { useRouter } from 'next/navigation';
 import {
   Card,
