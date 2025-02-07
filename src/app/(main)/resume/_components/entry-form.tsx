@@ -63,15 +63,12 @@ const EntryForm = ({
     fn: improveWithAIFn,
   } = useFetch<{ current: string; type: string }, string>(improveWithAI);
   const handleAdd = handleValidation((data: EntryResume) => {
-    console.log();
-
     const formatedData = {
       ...data,
       startDate: formatDate(data.startDate) as string,
       endDate: data?.current ? '' : (formatDate(data.endDate) as string),
     };
     onChange([...entries, formatedData]);
-    console.log(entries);
   });
   const handleDelete = (index: number) => {
     const newEntries = entries.filter((_, i) => i !== index);
@@ -80,7 +77,7 @@ const EntryForm = ({
   useEffect(() => {
     if (improvedContent && !isImproving) {
       setValue('description', improvedContent);
-      toast.success('Description impoved successfully');
+      toast.success('Description improved successfully');
     }
     if (improveError) {
       toast.error(improveError?.message || 'Failed to improve desciprtion');
@@ -169,9 +166,11 @@ const EntryForm = ({
                   {...register('endDate')}
                   disabled={current}
                 />
-                <p className="text-sm text-red-500">
-                  {errors.endDate?.message}
-                </p>
+                {errors.endDate && (
+                  <p className="text-sm text-red-500">
+                    {errors.endDate?.message}
+                  </p>
+                )}
               </div>
             </div>
 
