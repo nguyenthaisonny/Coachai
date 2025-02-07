@@ -70,7 +70,8 @@ export async function updateUser(
 export async function getUserOnBoardingStatus(): Promise<{
   isOnboarded: boolean;
 }> {
-  const { userId } = await checkUserLogin();
+  const { userId } = await auth();
+  if(!userId) throw new Error('User not found')
   try {
     const user = await db.user.findUnique({
       where: {
