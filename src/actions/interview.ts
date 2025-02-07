@@ -50,8 +50,8 @@ export async function saveQuizResult({
     isCorrect: q.correctAnswer === answers[index],
     explanation: q.explanation,
   }));
-  let totalQuestion = questions.length;
-  let scoreOfOneQuestion = 100 / totalQuestion;
+  const totalQuestion = questions.length;
+  const scoreOfOneQuestion = 100 / totalQuestion;
   let score = 0;
   questionResults.map(({ isCorrect }) => {
     if (isCorrect) score += scoreOfOneQuestion;
