@@ -45,7 +45,9 @@ export const generateIndustryInsights = inngest.createFunction(
       );
       const text =
         res?.response?.candidates && res.response.candidates[0] !== undefined
-          ? res.response.candidates[0]?.content?.parts[0]?.text
+          ? 'text' in res.response.candidates[0]?.content?.parts[0] 
+            ? res.response.candidates[0]?.content?.parts[0]?.text 
+            : ''
           : '';
       const cleanedText = text.replace(/```(?:json)?\n?/g, '').trim();
 
