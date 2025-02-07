@@ -13,7 +13,10 @@ interface UpdateUserResponse {
 export async function updateUser(
   data: UserOnBoarding,
 ): Promise<UpdateUserResponse> {
-  const { userId } = await checkUserLogin();
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error('User not authenticated');
+  }
   try {
     const result: any = await db.$transaction(
       async (tx) => {
@@ -71,7 +74,9 @@ export async function getUserOnBoardingStatus(): Promise<{
   isOnboarded: boolean;
 }> {
   const { userId } = await auth();
-  if(!userId) throw new Error('User not found')
+  if (!userId) {
+    throw new Error('User not authenticated');
+  }
   try {
     const user = await db.user.findUnique({
       where: {
