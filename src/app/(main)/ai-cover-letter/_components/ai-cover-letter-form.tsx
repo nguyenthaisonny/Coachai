@@ -139,7 +139,7 @@ const AICoverLetterForm = () => {
               <NotebookTabs className="w-4 h-4 mb-2" />
             </div>
             <CardDescription>
-              Provide information about the position you're apply for
+              Provide information about the position you`&apos;`re apply for
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

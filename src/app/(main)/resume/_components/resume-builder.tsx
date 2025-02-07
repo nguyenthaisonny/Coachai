@@ -21,7 +21,6 @@ import EntryForm from './entry-form';
 import { entriesToMarkdown } from '@/app/lib/helper';
 import MDEditor from '@uiw/react-md-editor';
 import { useUser } from '@clerk/nextjs';
-import html2pdf from 'html2pdf.js/dist/html2pdf.min.js';
 import { toast } from 'sonner';
 const ResumeBuilder = ({ initialContent }: { initialContent: string }) => {
   const [activeTab, setActiveTab] = useState<string>('edit');
@@ -79,25 +78,25 @@ const ResumeBuilder = ({ initialContent }: { initialContent: string }) => {
       toast.error(saveError.message || 'Failed to save resume');
     }
   }, [saveResult, saveError, isSaving]);
-  const handleDownloadPDF = async () => {
-    setIsDownloadingPDF(true);
-    try {
-      const element = document.getElementById('resume-pdf');
-      const opt = {
-        margin: [15, 15],
-        filename: 'resume.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      };
+  // const handleDownloadPDF = async () => {
+  //   setIsDownloadingPDF(true);
+  //   try {
+  //     const element = document.getElementById('resume-pdf');
+  //     const opt = {
+  //       margin: [15, 15],
+  //       filename: 'resume.pdf',
+  //       image: { type: 'jpeg', quality: 0.98 },
+  //       html2canvas: { scale: 2 },
+  //       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  //     };
 
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error('PDF generation error:', error);
-    } finally {
-      setIsDownloadingPDF(false);
-    }
-  };
+  //     await html2pdf().set(opt).from(element).save();
+  //   } catch (error) {
+  //     console.error('PDF generation error:', error);
+  //   } finally {
+  //     setIsDownloadingPDF(false);
+  //   }
+  // };
 
   const getContactMarkdown = () => {
     const { contactInfo } = formValues;
@@ -156,7 +155,7 @@ const ResumeBuilder = ({ initialContent }: { initialContent: string }) => {
               </>
             )}
           </Button>
-          <Button disabled={isDowloadingPDF} onClick={handleDownloadPDF}>
+          {/* <Button disabled={isDowloadingPDF} onClick={handleDownloadPDF}>
             {isDowloadingPDF ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin"></Loader2>
@@ -168,7 +167,7 @@ const ResumeBuilder = ({ initialContent }: { initialContent: string }) => {
                 Download PDF
               </>
             )}
-          </Button>
+          </Button> */}
         </div>
       </div>
 
